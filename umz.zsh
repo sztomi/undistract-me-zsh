@@ -5,15 +5,20 @@
 # of seconds to return to the shell.  e.g. if UMZ_COMMAND_TIMEOUT=10,
 # then 'sleep 11' will always generate a notification.
 
-# Default timeout is 10 seconds.
-if [ -z "$UMZ_COMMAND_TIMEOUT" ]; then
-  UMZ_COMMAND_TIMEOUT=10
-fi
 
-# Default is not to play sound along with notification. (0 is false, non-zero is true.)
-if [ -z "$UMZ_PLAY_SOUND" ]; then
-  UMZ_PLAY_SOUND=0
-fi
+# --- Configuration ---
+# (this odd `:` syntax is the colon builtin; this syntax basically sets default values for these
+# environment variables.)
+
+# Commands that take longer than this value (in seconds) will trigger a notification. 
+: ${UMZ_COMMAND_TIMEOUT:=10}
+
+# Controls if a sound should be played along with the notification. 
+# `0` means no, any other value means yes.
+: ${UMZ_PLAY_SOUND:=0}
+
+# Sound file to play upon completion (if `UMZ_PLAY_SOUND` is set to a non-zero value)
+: ${UMZ_SOUND_FILE:=/usr/share/sounds/freedesktop/stereo/complete.oga}
 
 function umz_init() {
   function get_now() {
